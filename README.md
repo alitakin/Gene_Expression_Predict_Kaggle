@@ -35,7 +35,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 * Tampere university of technology
-* Department of Signal Processing(http://www.tut.fi/en/about-tut/departments/signal-processing/), SGN-41007 course(http://www.cs.tut.fi/courses/SGN-41007/)  and the lectrure Heikki Huttunen(http://www.cs.tut.fi/~hehu/), which made us to participate in this competition :). 
+* [Department of Signal Processing](http://www.tut.fi/en/about-tut/departments/signal-processing/), [SGN-41007 course](http://www.cs.tut.fi/courses/SGN-41007/)  and the lectrure [Heikki Huttunen](http://www.cs.tut.fi/~hehu/), which made us to participate in this competition :). 
 * Hat tip to anyone who's code was used
 * Inspiration
 * etc
