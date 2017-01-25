@@ -6,14 +6,13 @@ The dataset of this competition is on "E047" (Primary T CD8+ naive cells from pe
 
 The goal of this competition is to develop algorithms for accurate predicting gene expression level. High gene expression level corresponds to target label = 1, and low gene expression corresponds to target label = 0.
 
-link of competition: [gene expression prediction competition] (https://inclass.kaggle.com/c/gene-expression-prediction)
-read more: [DeepChrome](https://arxiv.org/abs/1607.02078)
+link of competition in kaggle website: [gene expression prediction competition] (https://inclass.kaggle.com/c/gene-expression-prediction)
+read more about the data: [DeepChrome](https://arxiv.org/abs/1607.02078)
 ## To Do 
-
-know Data more 
-Learning Curve
-ROC
-switch to Deep Learning
+*try other algorithms.
+*plot learnig curve.
+*find the way for data augmantation.
+*switch to Deep Learning .
 
 ## Built With
 * [Python 2.7] (https://www.python.org/doc/)
@@ -22,10 +21,10 @@ switch to Deep Learning
 
 ## Authors
 
-* **Pia Niemala**  - (pia.s.niemala@gmail.com)
-* **Zeinab Rezaeiyousefi**  - (z.rezaei@gmail.com)
-* **Azarkhsh Hamedi**  - (azarakhsh.h@gmail.com)
-* **Saboktakin Hayati**  - (saboktakin.hayati@student.tut.fi)
+* **Pia Niemala**  - pia.s.niemala@gmail.com
+* **Zeinab Rezaeiyousefi**  - z.rezaei@gmail.com
+* **Azarkhsh Hamedi**  - azarakhsh.h@gmail.com
+* **Saboktakin Hayati**  - saboktakinhayati@gmail
 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
