@@ -9,10 +9,10 @@ The goal of this competition is to develop algorithms for accurate predicting ge
 link of competition in kaggle website: [gene expression prediction competition] (https://inclass.kaggle.com/c/gene-expression-prediction)
 read more about the data: [DeepChrome](https://arxiv.org/abs/1607.02078)
 ## To Do 
-*try other algorithms.
-*plot learnig curve.
-*find the way for data augmantation.
-*switch to Deep Learning .
+* try other algorithms.
+* plot learnig curve.
+* find the way for data augmantation.
+* switch to Deep Learning. 
 
 ## Built With
 * [Python 2.7] (https://www.python.org/doc/)
@@ -24,7 +24,7 @@ read more about the data: [DeepChrome](https://arxiv.org/abs/1607.02078)
 * **Pia Niemala**  - pia.s.niemala@gmail.com
 * **Zeinab Rezaeiyousefi**  - z.rezaei@gmail.com
 * **Azarkhsh Hamedi**  - azarakhsh.h@gmail.com
-* **Saboktakin Hayati**  - saboktakinhayati@gmail
+* **Saboktakin Hayati**  - saboktakinhayati@gmail.com
 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
@@ -34,7 +34,8 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-
+* Tampere university of technology
+* Department of Signal Processing, SGN-41007 course and the lectrure Heikki Huttunen, which made us to participate in this competition :). 
 * Hat tip to anyone who's code was used
 * Inspiration
 * etc
