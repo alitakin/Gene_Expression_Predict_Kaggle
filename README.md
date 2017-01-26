@@ -22,7 +22,7 @@ read more about the data: [DeepChrome](https://arxiv.org/abs/1607.02078)
 ## Authors
 
 * **Pia Niemala**  - pia.s.niemala@gmail.com
-* **Zeinab Rezaeiyousefi**  - z.rezaei@gmail.com
+* **Zeinab R.Yousefi**  - z.rezaei@gmail.com
 * **Azarkhsh Hamedi**  - azarakhsh.h@gmail.com
 * **Saboktakin Hayati**  - saboktakinhayati@gmail.com
 
