@@ -9,20 +9,20 @@ The goal of this competition is to develop algorithms for accurate predicting ge
 link of competition in kaggle website: [gene expression prediction competition] (https://inclass.kaggle.com/c/gene-expression-prediction)
 read more about the data: [DeepChrome](https://arxiv.org/abs/1607.02078)
 ## To Do 
-* try other algorithms.
-* plot learnig curve.
-* find the way for data augmantation.
-* switch to Deep Learning. 
+* Trying other algorithms.
+* Ploting learnig curve.
+* Finding a way for data augmantation.
+* Switching to Deep Learning algorithms. 
 
 ## Built With
-* [Python 2.7] (https://www.python.org/doc/)
+* [Python 2.7 & 3.5] (https://www.python.org/doc/)
 * [scikit-learn 0.18](http://scikit-learn.org/stable/documentation.html) - The machine learning framework used
 
 
 ## Authors
 
 * **Pia Niemala**  - pia.s.niemala@gmail.com
-* **Zeinab Rezaeiyousefi**  - z.rezaei@gmail.com
+* **Zeinab R.Yousefi**  - z.rezaei@gmail.com
 * **Azarkhsh Hamedi**  - azarakhsh.h@gmail.com
 * **Saboktakin Hayati**  - saboktakinhayati@gmail.com
 
