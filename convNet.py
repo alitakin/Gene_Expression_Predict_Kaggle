@@ -26,9 +26,9 @@ if __name__== '__main__':
     print ("All files loaded. Preprocessing...")
 
     # remove the first column(Id)
-    x_train = x_train[:,1:] 
-    x_test  = x_test[:,1:]   
-    y_train = y_train[:,1:] 
+#    x_train = x_train[:,1:] 
+#    x_test  = x_test[:,1:]   
+#    y_train = y_train[:,1:] 
 
     # Every 100 rows correspond to one gene.
     # Extract all 100-row-blocks into a list using np.split.
@@ -73,7 +73,7 @@ if __name__== '__main__':
 	# These parameters should be modified.
     num_featmaps = 10 # This many filters per layer
     num_classes = 2 # Digits 0,1
-    num_epochs = 50 # Show all samples 50 times
+    num_epochs = 100 # Show all samples 50 times
     w, h = 5, 5 # Conv window size
 
     
@@ -81,7 +81,7 @@ if __name__== '__main__':
     
     # Layer 1: needs input_shape as well.
 	# input_shape needs to be corrected. 
-    model.add(Convolution2D(num_featmaps, w, h, input_shape=(, , ), activation = 'relu'))
+    model.add(Convolution2D(num_featmaps, w, h, border_mode='same', input_shape=(1, 5, 100), activation = 'relu'))
     # Layer 2:
     model.add(Convolution2D(num_featmaps, w, h, activation = 'relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
