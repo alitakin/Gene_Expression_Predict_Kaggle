@@ -1,9 +1,14 @@
-# Example of loading the data.
+
 import numpy as np
+import matplotlib.pyplot as plt
+
 import os
 from sklearn.cross_validation import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
+
+
+
 
 if __name__== '__main__':
 
@@ -63,20 +68,22 @@ if __name__== '__main__':
     print("3. Fine tune the parameters and return to 2 until happy (optional)")
     print("4. Create submission file. Should be similar to y_train.csv.")
     print("5. Submit at kaggle.com and sit back.")
-    
-#    
+
     X_train, X_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.33, random_state=50)
     
-    model = KNeighborsClassifier(n_neighbors=5)    
+#    model = LogisticRegression(penalty = "l1", C = 0.1)
+    
+    model = RandomForestClassifier()
+    
     model.fit(X_train, y_train)
     y_hat = model.predict(X_test)
+#    y_hat = np.array(model.predict(X_test))
     p = model.predict_proba(X_test)
-
+#    p = np.array(model.predict_proba(X_test))
     print(y_hat)
-    print(p)    
+    print(p)
+    
     y_true = np.array(y_test)
+
     acuracy = roc_auc_score(y_true, y_hat)
     print(acuracy)
-
-  
-
