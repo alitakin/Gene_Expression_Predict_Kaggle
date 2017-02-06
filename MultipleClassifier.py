@@ -15,7 +15,7 @@ from sklearn.metrics import roc_auc_score
 
 if __name__== '__main__':
 
-    data_path = "C:\\Users\\Z RY\\Documents\\TUT\\Competetion\\Gene_Expression_Predict_Kaggle" # This folder holds the csv files
+    data_path = "Data" # This folder holds the csv files
 
     # load csv files. We use np.loadtxt. Delimiter is ","
     # and the text-only header row will be skipped.   
@@ -80,7 +80,7 @@ if __name__== '__main__':
         accuracies.append(accuracy) 
         y_pred_proba = clf.predict_proba(x_test)
         
-    print('Accuracies NN = %.4f, LDA = %.4f, SVC = %.4f, RF = %.4f and LR = %.4f'  % (accuracies[0], accuracies[1], accuracies[2], accuracies[3], accuracies[4])) 
+    print('Accuracies KNN = %.4f, LDA = %.4f, SVC = %.4f, RF = %.4f and LR = %.4f'  % (accuracies[0], accuracies[1], accuracies[2], accuracies[3], accuracies[4])) 
     
 #        csv_file=open("rf.csv","w")
 #        csv_file.write("GeneId,Prediction\n")

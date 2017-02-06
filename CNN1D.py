@@ -51,14 +51,14 @@ if __name__== '__main__':
     x_test  = np.array(x_test)
     y_train = np.ravel(y_train)
         
-    batch_size = 32
+    batch_size = 20
     nb_classes = 2
-    nb_epoch = 100
+    nb_epoch = 30
     
     # input data dimensions
     data_shape = (100, 5)
     # number of convolutional filters to use
-    nb_filters = 5
+    nb_filters = 20
     # size of pooling area for max pooling
     pool = 5
     # convolution kernel size
@@ -80,16 +80,13 @@ if __name__== '__main__':
     
     model.add(Convolution1D(nb_filters, kernel_size,
                             border_mode = 'valid',
-                            input_shape = data_shape))
-    model.add(Activation('relu'))
-    model.add(Convolution1D(nb_filters, kernel_size))
-    model.add(Activation('relu'))
+                            input_shape = data_shape, activation = 'relu'))
+    model.add(Convolution1D(nb_filters, kernel_size, activation = 'relu'))
     model.add(MaxPooling1D(pool_length = pool))
     model.add(Dropout(0.25))
     
     model.add(Flatten())
-    model.add(Dense(128))
-    model.add(Activation('relu'))
+    model.add(Dense(128, activation = 'relu'))
     model.add(Dropout(0.5))
     model.add(Dense(nb_classes))   
 #    model.add(Activation('softmax'))
@@ -105,17 +102,18 @@ if __name__== '__main__':
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
     
-#    y_pred = model.predict(X_test, batch_size = batch_size, verbose = 1)
-#    y_pred_proba = model.predict_proba(X_test, batch_size = batch_size, verbose = 1)
-#    acuracy = roc_auc_score(Y_test, y_pred)
-#    print('Accuraacy is %.4f : ' % (acuracy))
+    y_pred = model.predict_classes(X_test)
+    y_pred = np_utils.to_categorical(y_pred, nb_classes)
+#    y_pred = model.predict_classes(X_test, batch_size = batch_size, verbose = 1)
+
+    acuracy = roc_auc_score(Y_test, y_pred)
+    print('Accuraacy is %.4f : ' % (acuracy))
     
-#    
-#    csv_file=open("rf.csv","w")
-#    csv_file.write("GeneId,Prediction\n")
-#    i=1
-#    for pred in y_pred_proba:
-##        print(pred, pred[0], pred[1])
-#        m = pred[1]
-#        csv_file.write(str(i)+","+str(m)+"\n")
-#        i=i+1
+    
+    csv_file=open("rf.csv","w")
+    csv_file.write("GeneId,Prediction\n")
+    i=1
+    for pred in y_pred:
+        m = pred[1]
+        csv_file.write(str(i)+","+str(m)+"\n")
+        i=i+1
