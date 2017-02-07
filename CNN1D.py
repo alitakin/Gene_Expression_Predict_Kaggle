@@ -5,6 +5,8 @@ from sklearn.cross_validation import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn import preprocessing
 
+import matplotlib.pyplot as plt
+
 #from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
@@ -50,6 +52,7 @@ if __name__== '__main__':
     X_train = np.array(x_train)
     y_train = np.array(y_train)
     X_test  = np.array(x_test)
+    y_train = np.ravel(y_train)
     
     # Preprocessing
 
@@ -144,7 +147,7 @@ if __name__== '__main__':
     print('Accuraacy is %.4f : ' % (acuracy))
     
     
-    csv_file=open("rf.csv","w")
+    csv_file=open("CNN1D.csv","w")
     csv_file.write("GeneId,Prediction\n")
     i=1
     for pred in y_pred:
