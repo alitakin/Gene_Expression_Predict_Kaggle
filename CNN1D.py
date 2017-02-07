@@ -3,6 +3,7 @@ import numpy as np
 import os
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import roc_auc_score
+from sklearn import preprocessing
 
 #from keras.datasets import mnist
 from keras.models import Sequential
@@ -12,7 +13,7 @@ from keras.utils import np_utils
 
 
 if __name__== '__main__':
-    data_path = "Data" # This folder holds the csv files
+    data_path = "C:\\Users\\Z RY\\Documents\\TUT\\Competetion\\Gene_Expression_Predict_Kaggle" # This folder holds the csv files
     
     # load csv files. We use np.loadtxt. Delimiter is ","
     # and the text-only header row will be skipped.   
@@ -46,26 +47,31 @@ if __name__== '__main__':
     #x_test  = [g.ravel() for g in x_test]
     
     # convert data from list to array
-    x_train = np.array(x_train)
+    X_train = np.array(x_train)
     y_train = np.array(y_train)
-    x_test  = np.array(x_test)
-    y_train = np.ravel(y_train)
-        
+    X_test  = np.array(x_test)
+    
+    # Preprocessing
+
+#    X_train = preprocessing.scale(X_train) 
+#    X_test = preprocessing.scale(X_test) 
+    
+    
     batch_size = 20
-    nb_classes = 2
-    nb_epoch = 30
+    num_classes = 2
+    num_epochs = 30
     
     # input data dimensions
     data_shape = (100, 5)
     # number of convolutional filters to use
-    nb_filters = 20
+    num_featmaps = 20
     # size of pooling area for max pooling
-    pool = 5
-    # convolution kernel size
-    kernel_size = 5
+    pool = 2
+    # convolution window size
+    window_size = 5
     
     # the data, shuffled and split between train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.2)
     
 
     print('X_train shape:', X_train.shape)
@@ -73,37 +79,65 @@ if __name__== '__main__':
     print(X_test.shape[0], 'test samples')
     
     # convert class vectors to binary class matrices
-    Y_train = np_utils.to_categorical(y_train, nb_classes)
-    Y_test = np_utils.to_categorical(y_test, nb_classes)
+    Y_train = np_utils.to_categorical(y_train, num_classes)
+    Y_test = np_utils.to_categorical(y_test, num_classes)
     
+    
+#   Prepare model 
     model = Sequential()
-    
-    model.add(Convolution1D(nb_filters, kernel_size,
+#    Layaer 1 : needs input_shape as well
+    model.add(Convolution1D(num_featmaps, window_size,
                             border_mode = 'valid',
                             input_shape = data_shape, activation = 'relu'))
-    model.add(Convolution1D(nb_filters, kernel_size, activation = 'relu'))
+
+#    Layer 2: 
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
     model.add(MaxPooling1D(pool_length = pool))
     model.add(Dropout(0.25))
     
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
+    model.add(MaxPooling1D(pool_length = pool))
+    model.add(Dropout(0.25))
+    
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
+    model.add(MaxPooling1D(pool_length = pool))
+    model.add(Dropout(0.25))
+    
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
+    model.add(MaxPooling1D(pool_length = pool))
+    model.add(Dropout(0.25))
+    
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
+    model.add(MaxPooling1D(pool_length = pool))
+    model.add(Dropout(0.25))
+    
+    model.add(Convolution1D(num_featmaps, window_size, activation = 'relu', border_mode = 'same'))
+    model.add(MaxPooling1D(pool_length = pool))
+    model.add(Dropout(0.25))
+    
+    
+#    Layer 3 : dense layer with 128 nodes
     model.add(Flatten())
     model.add(Dense(128, activation = 'relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(nb_classes))   
-#    model.add(Activation('softmax'))
     
-    model.compile(loss='categorical_crossentropy',
-                  optimizer='adadelta',
-                  metrics=['accuracy'])
+#    Last layer: producing 2 outputs
+    model.add(Dense(num_classes, activation = 'softmax'))   
     
-    model.fit(X_train, Y_train, batch_size = batch_size, nb_epoch = nb_epoch,
-              verbose = 0, validation_data = (X_test, Y_test))
-    score = model.evaluate(X_test, Y_test, batch_size = batch_size, verbose = 1)
+#    Compile and run
+    model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
+    
+    model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=num_epochs, validation_data=(X_test, Y_test))
+    
+    score = model.evaluate(X_test, Y_test, batch_size = batch_size)
     
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
     
+#    model.save("CNN1D.h5")
+    
     y_pred = model.predict_classes(X_test)
-    y_pred = np_utils.to_categorical(y_pred, nb_classes)
+    y_pred = np_utils.to_categorical(y_pred, num_classes)
 #    y_pred = model.predict_classes(X_test, batch_size = batch_size, verbose = 1)
 
     acuracy = roc_auc_score(Y_test, y_pred)
