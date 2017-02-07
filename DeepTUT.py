@@ -12,24 +12,25 @@ from keras.models import Sequential
 #from keras.utils import np_utils
 import numpy as np
 
-#rows_count=15485
-rows_count=100
+total_row_count=15485
+row_count=100
 x_fileName="Data/x_train.csv"
 y_fileName="Data/y_train.csv"
 
 
-def get_data():
+def get_data(counter):
     
     # data has to be 4D: sample_id, color_channel, y, X
-    x_train=np.zeros((rows_count,5,100,1))
+    x_train=np.zeros((row_count,5,100,1))
     y_train=[]
     f=open(x_fileName) 
+    f.seek(counter*row_count)
 
     ex_id=""    
     i=0
     k=0
     for row in f:
-        if (i>rows_count-1):break
+        if (i>row_count-1):break
         if (i>100):break
         items = row.split(",")
         tmp_id=items[0]
@@ -48,7 +49,7 @@ def get_data():
 
 
     y_train=np.genfromtxt(y_fileName, delimiter=",",skip_header=1)
-    y_train=y_train[:rows_count]
+    y_train=y_train[:row_count]
     y_train = np.array(y_train)
     print(y_train.shape)
 #    y_train = np_utils.to_categorical(y_train, 2)
@@ -91,9 +92,10 @@ if __name__ == '__main__':
     # cnn structure
     model = Sequential()
     add_layers(model)
+    limit=int(total_row_count/row_count)
     
-    for i in range(1):
-        x_train,y_train = get_data()   
+    for counter in range(limit):
+        x_train,y_train = get_data(counter)   
         train_model(x_train, y_train, model)
         #lots of data - if saving is needed, save the model
 
