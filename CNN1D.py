@@ -59,7 +59,7 @@ if __name__== '__main__':
     
     batch_size = 20
     num_classes = 2
-    num_epochs = 30
+    num_epochs = 50
     
     # input data dimensions
     data_shape = (100, 5)
