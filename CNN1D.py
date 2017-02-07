@@ -53,7 +53,7 @@ if __name__== '__main__':
     y_train = np.array(y_train)
     X_test  = np.array(x_test)
     y_train = np.ravel(y_train)
-    
+#    
     # Preprocessing
 
 #    X_train = preprocessing.scale(X_train) 
@@ -74,7 +74,7 @@ if __name__== '__main__':
     window_size = 5
     
     # the data, shuffled and split between train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.2)
+#    X_train, X_test, y_train, y_test = train_test_split(X_train, y_train, test_size=0.2)
     
 
     print('X_train shape:', X_train.shape)
@@ -83,7 +83,7 @@ if __name__== '__main__':
     
     # convert class vectors to binary class matrices
     Y_train = np_utils.to_categorical(y_train, num_classes)
-    Y_test = np_utils.to_categorical(y_test, num_classes)
+#    Y_test = np_utils.to_categorical(y_test, num_classes)
     
     
 #   Prepare model 
@@ -130,22 +130,23 @@ if __name__== '__main__':
 #    Compile and run
     model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
     
-    model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=num_epochs, validation_data=(X_test, Y_test))
+    model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=num_epochs)
     
-    score = model.evaluate(X_test, Y_test, batch_size = batch_size)
-    
-    print('Test score:', score[0])
-    print('Test accuracy:', score[1])
+#    score = model.evaluate(X_test, Y_test, batch_size = batch_size)
+#    
+#    print('Test score:', score[0])
+#    print('Test accuracy:', score[1])
     
 #    model.save("CNN1D.h5")
     
-    y_pred = model.predict_classes(X_test)
+#    y_pred = model.predict_classes(X_test)
+    y_pred = model.predict_classes(X_test, batch_size = batch_size, verbose = 1)
     y_pred = np_utils.to_categorical(y_pred, num_classes)
-#    y_pred = model.predict_classes(X_test, batch_size = batch_size, verbose = 1)
 
-    acuracy = roc_auc_score(Y_test, y_pred)
-    print('Accuraacy is %.4f : ' % (acuracy))
-    
+#
+#    acuracy = roc_auc_score(Y_test, y_pred)
+#    print('Accuraacy is %.4f : ' % (acuracy))
+#   
     
     csv_file=open("CNN1D.csv","w")
     csv_file.write("GeneId,Prediction\n")
