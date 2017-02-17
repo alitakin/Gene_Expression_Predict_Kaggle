@@ -2,11 +2,8 @@ import numpy as np
 import os
 #import csv
 
-from sklearn import preprocessing
-from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import cross_val_score
+from sklearn.cross_validation import cross_val_score, StratifiedKFold
 
 
 
@@ -59,40 +56,19 @@ if __name__== '__main__':
     print("x_train shape is %s" % str(x_train.shape))    
     print("y_train shape is %s" % str(y_train.shape))
     print("x_test shape is %s" % str(x_test.shape))
+ 
+    print('Data preprocessing done...')
     
-    
-#    col_max = np.amax(x_train, axis = 0)
-#    row_max = np.amax(x_train, axis = 1)
-#    whole_max = np.amax(x_train)
-    
-#    x_train = preprocessing.scale(x_train) 
-#    x_test = preprocessing.scale(x_test) 
-#    
-#    print('Data preprocessing done...')
-#    
-#    
-#    
-#
 #    X_train, X_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
-#    C_range = 10.0 ** np.arange(-6, 1)
-#    clf = LogisticRegression()
-#    for C in C_range:
-#        for penalty in ["l1", "l2"]:
-#            clf.C = C
-#            clf.penalty = penalty           
-#            clf.fit(X_train, y_train)
-#            y_pred = clf.predict(X_test)
-#            scores = cross_val_score(clf, X_test, y_test, cv = 5)
-#            accuracy = roc_auc_score(y_test, y_pred)
-#            y_pred_proba = clf.predict_proba(X_test)
-#            print ("Accuracy for C = %.2e and penalty = %s is %.5f" % (C, penalty, accuracy))    
-#            print(scores)
-#            
-##        csv_file=open("LogReg.csv","w")
-##        csv_file.write("GeneId,Prediction\n")
-##        i=1
-##        for pred in y_pred_proba:
-##            m = pred[1]
-##            csv_file.write(str(i)+","+str(m)+"\n")
-##            i=i+1
-#        
+    C_range = 10.0 ** np.arange(-6, 1)
+    clf = LogisticRegression()
+    for C in C_range:
+        for penalty in ["l1", "l2"]:
+            clf.C = C
+            clf.penalty = penalty           
+            clf.fit(x_train, y_train)
+            skf = StratifiedKFold(y_train, 10, shuffle = True)
+            scores = cross_val_score(clf, x_train, y_train)
+        
+            
+            print ("Accuracy for C = %.2e and penalty = %s is %.2f %% +- %.2f" % (C, penalty, 100*np.mean(scores), 100*np.std(scores)))    
