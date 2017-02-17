@@ -2,25 +2,18 @@ import numpy as np
 import os
 #import csv
 
+from sklearn import preprocessing
 from sklearn.cross_validation import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.lda import LDA
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
-#from sklearn import datasets, linear_model
 from sklearn.model_selection import cross_val_score
 
 
-def LRPenalty(p):
-
-def LRC(c):
 
 
 if __name__== '__main__':
 
-    data_path = "Data" # This folder holds the csv files
+    data_path = "C:\\Users\\Z RY\\Documents\\TUT\\Competetion\\Gene_Expression_Predict_Kaggle" # This folder holds the csv files
 
     # load csv files. We use np.loadtxt. Delimiter is ","
     # and the text-only header row will be skipped.   
@@ -67,32 +60,39 @@ if __name__== '__main__':
     print("y_train shape is %s" % str(y_train.shape))
     print("x_test shape is %s" % str(x_test.shape))
     
-    print('Data preprocessing done...')
     
-
-    x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
+#    col_max = np.amax(x_train, axis = 0)
+#    row_max = np.amax(x_train, axis = 1)
+#    whole_max = np.amax(x_train)
     
-    classifiers = [(KNeighborsClassifier(), "Nearest Neighbor"),
-                   (LDA(), "Linear Discriminant Analysis"),
-                   (SVC(probability = True), "Support Vector Machine"),
-                   (RandomForestClassifier(), "Random Forest"),
-                   (LogisticRegression(), "Logistic Regression")]
-    accuracies = []
-    for clf,name in classifiers:    
-        clf.fit(x_train, y_train)
-        y_pred = clf.predict(x_test)
-        accuracy = roc_auc_score(y_test, y_pred)
-        accuracies.append(accuracy) 
-        y_pred_proba = clf.predict_proba(x_test)
-        
-    print('Accuracies KNN = %.4f, LDA = %.4f, SVC = %.4f, RF = %.4f and LR = %.4f'  % (accuracies[0], accuracies[1], accuracies[2], accuracies[3], accuracies[4])) 
-    
-#        csv_file=open("rf.csv","w")
-#        csv_file.write("GeneId,Prediction\n")
-#        i=1
-#        for pred in y_pred_proba:
-#    #        print(pred, pred[0], pred[1])
-#            m = pred[1]
-#            csv_file.write(str(i)+","+str(m)+"\n")
-#            i=i+1
-        
+#    x_train = preprocessing.scale(x_train) 
+#    x_test = preprocessing.scale(x_test) 
+#    
+#    print('Data preprocessing done...')
+#    
+#    
+#    
+#
+#    X_train, X_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
+#    C_range = 10.0 ** np.arange(-6, 1)
+#    clf = LogisticRegression()
+#    for C in C_range:
+#        for penalty in ["l1", "l2"]:
+#            clf.C = C
+#            clf.penalty = penalty           
+#            clf.fit(X_train, y_train)
+#            y_pred = clf.predict(X_test)
+#            scores = cross_val_score(clf, X_test, y_test, cv = 5)
+#            accuracy = roc_auc_score(y_test, y_pred)
+#            y_pred_proba = clf.predict_proba(X_test)
+#            print ("Accuracy for C = %.2e and penalty = %s is %.5f" % (C, penalty, accuracy))    
+#            print(scores)
+#            
+##        csv_file=open("LogReg.csv","w")
+##        csv_file.write("GeneId,Prediction\n")
+##        i=1
+##        for pred in y_pred_proba:
+##            m = pred[1]
+##            csv_file.write(str(i)+","+str(m)+"\n")
+##            i=i+1
+#        
