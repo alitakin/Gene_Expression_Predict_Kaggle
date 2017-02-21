@@ -1,0 +1,106 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+from sklearn.pipeline import Pipeline
+from sklearn import linear_model, decomposition
+from sklearn.decomposition import PCA
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import roc_auc_score
+
+
+
+
+
+
+logistic = linear_model.LogisticRegression()
+
+pca = decomposition.PCA()
+pipe = Pipeline(steps=[('pca', pca), ('logistic', logistic)])
+
+if __name__ == '__main__':
+    data_path = "./"  # This folder holds the csv files
+
+    # load csv files. We use np.loadtxt. Delimiter is ","
+    # and the text-only header row will be skipped.
+
+    print("Loading data...")
+    x_train = np.loadtxt(data_path + os.sep + "x_train.csv",
+                         delimiter=",", skiprows=1)
+    x_test = np.loadtxt(data_path + os.sep + "x_test.csv",
+                        delimiter=",", skiprows=1)
+    y_train = np.loadtxt(data_path + os.sep + "y_train.csv",
+                         delimiter=",", skiprows=1)
+
+    print ("All files loaded. Preprocessing...")
+
+    # remove the first column(Id)
+    x_train = x_train[:, 1:]
+    x_test = x_test[:, 1:]
+    y_train = y_train[:, 1:]
+
+    # Every 100 rows correspond to one gene.
+    # Extract all 100-row-blocks into a list using np.split.
+    num_genes_train = x_train.shape[0] / 100
+    num_genes_test = x_test.shape[0] / 100
+
+    print("Train / test data has %d / %d genes." % \
+          (num_genes_train, num_genes_test))
+    x_train = np.split(x_train, num_genes_train)
+    x_test = np.split(x_test, num_genes_test)
+
+    # Reshape by raveling each 100x5 array into a 500-length vector
+    x_train = [g.ravel() for g in x_train]
+    x_test = [g.ravel() for g in x_test]
+
+    # convert data from list to array
+    x_train = np.array(x_train)
+    y_train = np.array(y_train)
+    x_test = np.array(x_test)
+    y_train = np.ravel(y_train)
+
+    # Now x_train should be 15485 x 500 and x_test 3871 x 500.
+    # y_train is 15485-long vector.
+
+    print("x_train shape is %s" % str(x_train.shape))
+    print("y_train shape is %s" % str(y_train.shape))
+    print("x_test shape is %s" % str(x_test.shape))
+
+    print('Data preprocessing done...')
+
+    x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
+
+
+    n_components = [10,20,30,40,50,60,70,80,90,100]
+    Cs = np.logspace(-4,4,3)
+
+    for n in n_components:
+        pipe.set_params(pca__n_components=n)
+        pipe.fit(x_train,y_train)
+
+        y_pred_n = pipe.predict(x_test)
+
+        accuracy_n = roc_auc_score(y_test,y_pred_n)
+        print("Accuracy for PCA with %d components is %.4f percent" % (n , accuracy_n))
+
+
+    estimator = GridSearchCV(pipe,
+                             dict(pca__n_components=n_components,
+                                  logistic__C=Cs))
+    estimator.fit(x_train, y_train)
+
+
+    y_pred = estimator.predict(x_test)
+
+    y_pred_proba = estimator.predict_proba(x_test)
+
+    accuracy = roc_auc_score(y_test, y_pred)
+
+    print("\n Acuuracy calculated by GridSearchCV is %.4f and "
+          " number of components for this accurace is %d percents and "
+          " the best Logistic Regretion C is %.8f" %(accuracy, estimator.best_estimator_.named_steps['pca'].n_components,estimator.best_estimator_.named_steps['logistic'].C))
+
+    plt.axvline(estimator.best_estimator_.named_steps['pca'].n_components,
+             linestyle=':', label='n_components chosen')
+    plt.legend(prop=dict(size=12))
+    plt.show()
