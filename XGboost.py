@@ -2,6 +2,7 @@ import numpy as np
 import os
 
 import xgboost as xgb
+import xgboost.sklearn as XGB
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV
 
@@ -58,23 +59,24 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2)
 
     # specify parameters via map
-    #param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
-    bst = xgb.XGBClassifier(learning_rate =0.1,
-                            n_estimators=1000,
+    # param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
+    bst = xgb.XGBClassifier(learning_rate=0.1,
+                            n_estimators=5000,
                             max_depth=5,
                             min_child_weight=1,
-                            gamma=0,
-                            subsample=0.8,
-                            colsample_bytree=0.8,
-                            objective= 'binary:logistic',
+                            gamma=0.4,
+                            subsample=0.9,
+                            reg_alpha= 1e-10,
+                            colsample_bytree=0.9,
+                            objective='binary:logistic',
                             nthread=4,
                             scale_pos_weight=1,
                             seed=27)
 
-
     bst.fit(x_train, y_train)
 
     # make prediction
+
     y_pred = bst.predict(x_test)
 
 
@@ -83,15 +85,61 @@ if __name__ == '__main__':
     print("the accuurace for XGboost is: ", accuracy)
 
     # export the prediction probablities
-    y_predict_proba = bst.predict_proba(x_test)
+    # y_predict_proba = bst.predict_proba(x_test)
 
-    csv_file = open("XGboost.csv", "w")
-    csv_file.write("GeneId,Prediction\n")
-    i = 1
-    for pred in y_predict_proba:
-        m = pred[1]
-        csv_file.write(str(i) + "," + str(m) + "\n")
-        i = i + 1
+    # csv_file = open("XGboost.csv", "w")
+    # csv_file.write("GeneId,Prediction\n")
+    # i = 1
+    # for pred in y_predict_proba:
+    #    m = pred[1]
+    #    csv_file.write(str(i) + "," + str(m) + "\n")
+    #    i = i + 1
 
-    csv_file.close()
-    print ("CSV file ready.")
+    # csv_file.close()
+    # print ("CSV file ready.")
+    print("bst made!")
+
+    param_test1 = {
+        'max_depth': range(2, 10, 2),
+        'min_child_weight': range(1, 6, 2)
+    }
+    param_test2 = {
+        'max_depth': [3,4,5],
+        'min_child_weight': [4,5,6]
+    }
+    param_test3 = {
+        'gamma': [i / 10.0 for i in range(3, 9)]
+    }
+    param_test4 = {
+        'subsample': [i / 10.0 for i in range(6, 10)],
+        'colsample_bytree': [i / 10.0 for i in range(6, 10)]
+    }
+    param_test6a = {
+        'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100]
+    }
+    param_test6b = {
+        'reg_alpha': [1e-10, 1e-7, 1e-5]
+    }
+    param_test7 = {
+        'max_depth': [3, 4, 5],
+        'min_child_weight': [4, 5, 6],
+        'gamma': [i / 10.0 for i in range(3, 9)],
+        'subsample': [i / 10.0 for i in range(6, 10)],
+        'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'reg_alpha': [1e-10, 1e-7, 1e-5,1e-4,1e-03]
+
+    }
+    #gsearch1 = GridSearchCV(estimator=bst,
+    #                        param_grid=param_test, scoring='roc_auc', n_jobs=4, iid=False, cv=5)
+    #print("grid search cv made")
+    #gsearch1.fit(x_train, y_train)
+
+    #print("data trained")
+    #print("best params: ", gsearch1.best_params_)
+    #print("best score: ",gsearch1.best_score_)
+
+    #max_depth = gsearch1.best_params_
+    #print("max depth saved.")
+
+
