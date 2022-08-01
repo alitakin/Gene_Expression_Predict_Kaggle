@@ -13,14 +13,10 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import cross_val_score
 
 
-def LRPenalty(p):
-
-def LRC(c):
-
 
 if __name__== '__main__':
 
-    data_path = "Data" # This folder holds the csv files
+    data_path = "./" # This folder holds the csv files
 
     # load csv files. We use np.loadtxt. Delimiter is ","
     # and the text-only header row will be skipped.   
@@ -81,9 +77,10 @@ if __name__== '__main__':
     for clf,name in classifiers:    
         clf.fit(x_train, y_train)
         y_pred = clf.predict(x_test)
-        accuracy = roc_auc_score(y_test, y_pred)
-        accuracies.append(accuracy) 
         y_pred_proba = clf.predict_proba(x_test)
+        accuracy = roc_auc_score(y_test, y_pred_proba[:,1])
+        accuracies.append(accuracy) 
+        
         
     print('Accuracies KNN = %.4f, LDA = %.4f, SVC = %.4f, RF = %.4f and LR = %.4f'  % (accuracies[0], accuracies[1], accuracies[2], accuracies[3], accuracies[4])) 
     

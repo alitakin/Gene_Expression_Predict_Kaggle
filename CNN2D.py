@@ -12,7 +12,7 @@ from keras import backend as K
 
 
 if __name__== '__main__':
-    data_path = "C:\\Users\\Z RY\\OneDrive - TTY-saatio\\Pattern recognition and machine learning" # This folder holds the csv files
+    data_path = "./" # This folder holds the csv files
     
     # load csv files. We use np.loadtxt. Delimiter is ","
     # and the text-only header row will be skipped.   
@@ -58,7 +58,7 @@ if __name__== '__main__':
       # input data dimensions
     data_shape = (100, 5)
     # number of convolutional filters to use
-    num_featmaps = 20
+    num_featmaps = 50
     # size of pooling area for max pooling
     pool = (2, 2)
     # convolution window size
@@ -76,10 +76,7 @@ if __name__== '__main__':
         X_test = X_test.reshape(X_test.shape[0], data_shape[0], data_shape[1], 1)
         input_shape = (data_shape[0], data_shape[1], 1)
     
-#    X_train = X_train.astype('float32')
-#    X_test = X_test.astype('float32')
-#    X_train /= 255
-#    X_test /= 255
+
     print('X_train shape:', X_train.shape)
     print(X_train.shape[0], 'train samples')
     print(X_test.shape[0], 'test samples')
@@ -95,34 +92,38 @@ if __name__== '__main__':
                             input_shape=input_shape, 
                             activation = 'relu'))
 
-    
-    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
-    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
     model.add(Dropout(0.25))
     
     model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
     model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
     model.add(Dropout(0.25))
     
-    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
-    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
-    model.add(Dropout(0.25))
-    
-    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
-    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
-    model.add(Dropout(0.25))
-    
-    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
-    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
-    model.add(Dropout(0.25))
-    
-    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
-    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
-    model.add(Dropout(0.25))
+#    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
+#    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
+#    model.add(Dropout(0.25))
+#    
+#    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
+#    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
+#    model.add(Dropout(0.25))
+#    
+#    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
+#    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
+#    model.add(Dropout(0.25))
+#    
+#    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
+#    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
+#    model.add(Dropout(0.25))
+#    
+#    model.add(Convolution2D(num_featmaps, window_size[0], window_size[1], activation = 'relu', border_mode = 'same'))
+#    model.add(MaxPooling2D(pool_size=pool, border_mode='same'))
+#    model.add(Dropout(0.25))
  
     #    Layer 3 : dense layer with 128 nodes
     model.add(Flatten())
-    model.add(Dense(128, activation = 'relu'))
+#    model.add(Dense(625, activation = 'relu'))
+#    model.add(Dropout(0.5))
+    
+    model.add(Dense(125, activation = 'relu'))
     model.add(Dropout(0.5))
     
 #    Last layer: producing 2 outputs
@@ -131,7 +132,7 @@ if __name__== '__main__':
 #    Compile and run
     model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
     
-    model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=num_epochs, validation_data=(X_test, Y_test))
+    model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=num_epochs, validation_split=0.2)
     
     score = model.evaluate(X_test, Y_test, batch_size = batch_size)
 
@@ -140,12 +141,12 @@ if __name__== '__main__':
     
 #    model.save("CNN1D.h5")
 
-    y_pred = model.predict_classes(X_test)
-#    y_pred = model.predict(X_test, batch_size = batch_size, verbose = 1)
-    y_pred = np_utils.to_categorical(y_pred, num_classes)
+#    y_pred = model.predict_classes(X_test)
+    y_pred = model.predict(X_test, batch_size = batch_size, verbose = 1)
+#    y_pred = np_utils.to_categorical(y_pred, num_classes)
 
 
-    acuracy = roc_auc_score(Y_test, y_pred)
+    acuracy = roc_auc_score(y_test, y_pred)
     print('Accuraacy is %.4f : ' % (acuracy))
    
     
